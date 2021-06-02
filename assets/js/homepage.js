@@ -7,9 +7,16 @@ var getUserRepos = function(user) {
     var apiUrl = "https://api.github.com/users/" + user + "/repos";
 
     fetch(apiUrl).then(function(response){
+        if (response.ok) {
         response.json().then(function(data) {
             displayRepos(data, user); 
         })
+        } else {
+            alert("Error: GitHub User Not Found");
+        }  
+        })
+        .catch(function(error) {
+            alert("Unable to connect to Github"); 
     }); 
 }
 
@@ -29,6 +36,10 @@ function formSubmitHandler(event) {
 }
 
 var displayRepos = function(repos, searchTerm) {
+    if (repos.length === 0 ) {
+        repoContainerEl.textContent = "No repositories found.";
+        return; 
+    }
     repoContainerEl.textContent = "";
     repoSearchTerm.textContent = searchTerm; 
 
